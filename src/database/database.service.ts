@@ -1,33 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Pool } from 'pg';
 
 @Injectable()
 export class DatabaseService {
     private pool: Pool;
 
+    constructor(private readonly configService: ConfigService) { }
+
     /* Postgres connection on module init */
     private async onModuleInit() {
-        this.pool = new Pool({
-            host: 'localhost',
-            port: 5432,
-            database: 'chat_db',
-            user: 'root',
-            password: 'super_secret',
-            max: 5,
-            idleTimeoutMillis: 30000,
-            connectionTimeoutMillis: 2000,
-        });
-
         try {
+            this.pool = new Pool(this.configService.get('database'));
             const client = await this.pool.connect();
             client.release();
             console.log('Database connected');
         } catch (err) {
             console.error('Failed to connect to the database', err);
-            throw err; 
+            throw err;
         } finally {
         }
-        
+
     }
 
     /* End the connection on unmount of this module */
