@@ -7,6 +7,7 @@ import { GraphqlConfig } from './config/graphql.config';
 import { UsersModule } from './users/users.module';
 import { DatabaseService } from './database/database.service';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -21,7 +22,8 @@ import configuration from './config/configuration';
       envFilePath: ['.env', '.env.development'],
       load: [configuration],
     }),
-    UsersModule
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService, DatabaseService],
