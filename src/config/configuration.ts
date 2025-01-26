@@ -1,4 +1,3 @@
-
 export default () => ({
     database: {
         client: process.env.DATABASE_CLIENT,
@@ -10,5 +9,5 @@ export default () => ({
         max: +process.env.DATABASE_MAX_CONNECTION!,
         idleTimeoutMillis: +process.env.IDLE_TIMEOUT_MILLI!,
         connectionTimeoutMillis: +process.env.CONNECTION_TIMEOUT_MILL!,
-    }
+    },
 });

@@ -3,10 +3,10 @@ import { UsersService } from './users.service';
 
 @Resolver()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => String)
-  async getUser() {
-    return 'hi'
-  }
+    @Query(() => String)
+    async getUser() {
+        return 'hi';
+    }
 }

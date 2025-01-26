@@ -11,22 +11,22 @@ import configuration from './config/configuration';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useClass: GraphqlConfig,
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      cache: true,
-      envFilePath: ['.env', '.env.development'],
-      load: [configuration],
-    }),
-    UsersModule,
-    AuthModule,
-    DatabaseModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        GraphQLModule.forRootAsync<ApolloDriverConfig>({
+            driver: ApolloDriver,
+            useClass: GraphqlConfig,
+        }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            cache: true,
+            envFilePath: ['.env', '.env.development'],
+            load: [configuration],
+        }),
+        UsersModule,
+        AuthModule,
+        DatabaseModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
