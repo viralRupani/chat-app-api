@@ -1,7 +1,7 @@
 import { Module, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import knex, { Knex } from 'knex';
-import { config } from './knexfile';
+import { config } from '../../knexfile';
 
 @Module({
     imports: [ConfigModule],
