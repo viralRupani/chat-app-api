@@ -8,7 +8,7 @@ async function bootstrap() {
       origin: '*'
     }
   });
-  app.use(helmet());
+  // app.use(helmet());
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

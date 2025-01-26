@@ -5,10 +5,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlConfig } from './config/graphql.config';
 import { UsersModule } from './users/users.module';
-import { DatabaseService } from './database/database.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -23,9 +23,10 @@ import configuration from './config/configuration';
       load: [configuration],
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    DatabaseModule
   ],
   controllers: [AppController],
-  providers: [AppService, DatabaseService],
+  providers: [AppService],
 })
 export class AppModule {}
