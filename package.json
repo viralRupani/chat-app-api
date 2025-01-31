@@ -18,9 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate:make": "npx knex migrate:make -x ts --knexfile knexfile.ts --migrations-directory src/database/migrations --debug false",
-    "migrate:latest": "npx knex migrate:latest --knexfile knexfile.ts --migrations-directory src/database/migrations --debug false",
-    "migrate:list": "npx knex migrate:list --knexfile knexfile.ts --migrations-directory src/database/migrations --debug false"
+    "migration:generate": "yarn run build && npx typeorm migration:generate -d ./dist/database/data-source.js",
+    "migration:run": "yarn run build && npx typeorm migration:run -d ./dist/database/data-source.js"
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",
