@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -29,4 +29,17 @@ export class UserEntity {
     @Column({ type: 'varchar', length: 200, nullable: true })
     bio?: string;
 
+    @ManyToMany(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinTable({
+        name: 'users_following_followers_mapping',
+        joinColumn: {
+            name: 'user_id',
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'following_user_id',
+            referencedColumnName: 'id',
+        }
+    })
+    following_entity: UserEntity[]
 }
