@@ -1,7 +1,18 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ChatUserMapping } from 'src/chat/entities/chat-user.entity';
+import { ChatsEntity } from 'src/chat/entities/chat.entity';
+import { TimestampEntity } from 'src/common/common-entities/time-stamped.entity';
+import { MessagesEntity } from 'src/messages/entities/message.entity';
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UsersEntity extends TimestampEntity {
     @PrimaryGeneratedColumn('uuid')
     id?: string;
 
@@ -29,7 +40,9 @@ export class UserEntity {
     @Column({ type: 'varchar', length: 200, nullable: true })
     bio?: string;
 
-    @ManyToMany(() => UserEntity, { onDelete: 'CASCADE' })
+    /* Relations */
+    // user to user mapping for following and follower mapping (user_id -> follows -> following_user_id)
+    @ManyToMany(() => UsersEntity, { onDelete: 'CASCADE' })
     @JoinTable({
         name: 'users_following_followers_mapping',
         joinColumn: {
@@ -39,7 +52,18 @@ export class UserEntity {
         inverseJoinColumn: {
             name: 'following_user_id',
             referencedColumnName: 'id',
-        }
+        },
     })
-    following_entity: UserEntity[]
+    following_entity: UsersEntity[];
+
+    // created chats
+    @OneToMany(() => ChatsEntity, (chatsEntity) => chatsEntity.user)
+    chats: ChatsEntity[];
+
+    // user can generate multiple messages
+    @OneToMany(() => MessagesEntity, (messagesEntity) => messagesEntity.user)
+    messages: MessagesEntity[];
+
+    @OneToMany(() => ChatUserMapping, (chatUserMapping) => chatUserMapping.user)
+    chat_user_mapping: ChatUserMapping[];
 }
