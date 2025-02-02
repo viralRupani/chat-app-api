@@ -9,6 +9,7 @@ import {
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
+    Relation,
 } from 'typeorm';
 import { ChatUserMapping } from './chat-user.entity';
 
@@ -40,14 +41,14 @@ export class ChatsEntity extends TimestampEntity {
     /* Relations */
     // child messages
     @OneToMany(() => MessagesEntity, (messagesEntity) => messagesEntity.chat)
-    messages: MessagesEntity[];
+    messages: Relation<MessagesEntity[]>;
 
     // created by
     @ManyToOne(() => UsersEntity, (usersEntity) => usersEntity.chats)
     @JoinColumn({ name: 'user_id' })
-    user: UsersEntity;
+    user: Relation<UsersEntity>;
 
     // describes chat and users mapping with their role and other metadata
     @OneToMany(() => ChatUserMapping, (chatUserMapping) => chatUserMapping.chat)
-    chat_user_mapping: ChatUserMapping;
+    chat_user_mapping: Relation<ChatUserMapping>;
 }

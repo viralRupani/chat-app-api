@@ -9,6 +9,7 @@ import {
     ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
+    Relation,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -54,16 +55,16 @@ export class UsersEntity extends TimestampEntity {
             referencedColumnName: 'id',
         },
     })
-    following_entity: UsersEntity[];
+    following_entity: Relation<UsersEntity[]>;
 
     // created chats
     @OneToMany(() => ChatsEntity, (chatsEntity) => chatsEntity.user)
-    chats: ChatsEntity[];
+    chats: Relation<ChatsEntity[]>;
 
     // user can generate multiple messages
     @OneToMany(() => MessagesEntity, (messagesEntity) => messagesEntity.user)
-    messages: MessagesEntity[];
+    messages: Relation<MessagesEntity[]>;
 
     @OneToMany(() => ChatUserMapping, (chatUserMapping) => chatUserMapping.user)
-    chat_user_mapping: ChatUserMapping[];
+    chat_user_mapping: Relation<ChatUserMapping[]>
 }

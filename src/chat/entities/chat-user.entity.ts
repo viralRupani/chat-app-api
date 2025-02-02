@@ -4,6 +4,7 @@ import {
     JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
+    Relation,
 } from 'typeorm';
 import { ChatsEntity } from './chat.entity';
 import { UsersEntity } from 'src/users/entities/user.entity';
@@ -25,12 +26,12 @@ export class ChatUserMapping extends TimestampEntity {
         (chatsEntity) => chatsEntity.chat_user_mapping,
     )
     @JoinColumn({ name: 'chat_id' })
-    chat: ChatsEntity;
+    chat: Relation<ChatsEntity>;
 
     @ManyToOne(
         () => UsersEntity,
         (usersEntity) => usersEntity.chat_user_mapping,
     )
     @JoinColumn({ name: 'user_id' })
-    user: UsersEntity;
+    user: Relation<UsersEntity>;
 }

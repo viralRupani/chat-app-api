@@ -17,6 +17,7 @@ export const typeOrmConfig: DataSourceOptions = {
     migrationsTableName: 'migrations',
     synchronize: false,
     logging: !isProd,
+    ssl: Boolean(process.env.DATABASE_SSL || false),
     extra: {
         max: 10,
     },
