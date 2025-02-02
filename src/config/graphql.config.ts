@@ -1,13 +1,13 @@
-import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql';
+import { ApolloDriverConfig } from '@nestjs/apollo';
+import { GqlOptionsFactory } from '@nestjs/graphql';
 import { join } from 'node:path';
 
 export class GraphqlConfig implements GqlOptionsFactory {
-    createGqlOptions():
-        | Omit<GqlModuleOptions<any>, 'driver'>
-        | Promise<Omit<GqlModuleOptions<any>, 'driver'>> {
+    createGqlOptions(): ApolloDriverConfig {
         return {
             autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
             sortSchema: true,
+            playground: false,
         };
     }
 }

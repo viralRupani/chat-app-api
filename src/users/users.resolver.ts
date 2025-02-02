@@ -6,7 +6,7 @@ export class UsersResolver {
     constructor(private readonly usersService: UsersService) {}
 
     @Query(() => String)
-    async getUser() {
+    getUser() {
         return 'hi';
     }
 }

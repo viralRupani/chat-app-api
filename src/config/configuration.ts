@@ -1,4 +1,7 @@
 export default () => ({
+    app: {
+        port: process.env.PORT,
+    },
     database: {
         client: process.env.DATABASE_CLIENT,
         host: process.env.DATABASE_HOST,
