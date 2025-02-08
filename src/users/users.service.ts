@@ -5,7 +5,7 @@ import { UsersEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly dataSource: DataSource) {}
+    constructor(private readonly dataSource: DataSource) { }
 
     async createUser(
         dto: RegisterUserDto,
@@ -40,5 +40,30 @@ export class UsersService {
                 dto?.profile_url,
             ],
         );
+    }
+
+    async findUserByUsername(username: string) {
+        const foundUser = await this.dataSource.query(`
+                SELECT
+                    id,
+                    password,
+                    salt,
+                    first_name,
+                    last_name,
+                    phone_number,
+                    email,
+                    username,
+                    profile_url,
+                    bio
+                FROM
+                    users
+                WHERE
+                    username = $1
+                AND
+                    is_verified = $2
+                AND
+                    deleted_at IS NULL
+            `, [username, true])
+        return foundUser[0];
     }
 }

@@ -2,12 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LoginResponse {
+  access_token: String!
+  refresh_token: String!
+  user: UsersEntity!
+}
+
+input LoginUserDto {
+  password: String!
+  username: String!
+}
+
 type Mutation {
   registerUser(object: RegisterUserDto!): UsersEntity!
 }
 
 type Query {
   getUser: String!
+  login(object: LoginUserDto!): LoginResponse!
 }
 
 input RegisterUserDto {
