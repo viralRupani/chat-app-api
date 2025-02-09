@@ -6,16 +6,17 @@ import { UsersService } from 'src/users/users.service';
 import { UsersEntity } from 'src/users/entities/user.entity';
 import { generateOtp } from 'src/common/lib/otp-manager';
 import { LoginUserDto } from './dtos/login-user.dto';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { USER_NOT_FOUND, WRONG_CREDENTIALS } from 'src/common/constants';
-import { JwtService } from '@nestjs/jwt';
+import {  UseGuards } from '@nestjs/common';
+import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { AuthService } from './auth.service';
 import { LoginResponse } from './dtos/login-response.output';
 
 @Resolver()
 export class AuthResolver {
     constructor(
         private readonly usersService: UsersService,
-        private jwtService: JwtService
+        private authService: AuthService,
     ) { }
 
     @Mutation(() => UsersEntity)
@@ -34,25 +35,12 @@ export class AuthResolver {
         return createdUser[0];
     }
 
+    @UseGuards(LocalAuthGuard)
     @Query(() => LoginResponse)
-    async login(@Args('object') dto: LoginUserDto): Promise<LoginResponse> {
-        const userDetails: UsersEntity = await this.usersService.findUserByUsername(dto.username)
-        if (!userDetails) {
-            throw new NotFoundException(USER_NOT_FOUND);
-        }
-        const hash = await hashPassword(dto.password, userDetails.salt);
-        if (hash !== userDetails.password) {
-            throw new UnauthorizedException(WRONG_CREDENTIALS);
-        }
-        const jwtPayload = { sub: userDetails.id, username: userDetails.username }
-        const [access_token, refresh_token] = await Promise.all([
-            this.jwtService.signAsync(jwtPayload),
-            this.jwtService.signAsync({ ...jwtPayload, type: 'refresh' }, { expiresIn: '8h' })
-        ])
-        return {
-            access_token,
-            refresh_token,
-            user: userDetails,
-        }
+    async login(
+        @Args('object') dto: LoginUserDto,
+        @CurrentUser() user: any
+    ) {
+        return this.authService.login(user);
     }
 }
